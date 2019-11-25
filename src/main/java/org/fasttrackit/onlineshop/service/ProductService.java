@@ -19,6 +19,7 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
     public Product createProduct(SaveProductRequest request) {
 
         LOGGER.info("Creating product {} {}",request);
