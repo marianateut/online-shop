@@ -75,13 +75,13 @@ public class ProductServiceIntegrationTests {
 		assertThat(updatedProduct.getQuantity(), is(request.getQuantity()));
 
       	}
-      	@Test(expected = ResourceNotFoundException.class)
-      	public void testDeleteProduct_whenExistingProduct_thenProductIsDeleted(){
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testDeleteProduct_whenExistingProduct_thenProductIsDeleted(){
         Product product = createProduct();
         productService.deleteProduct((product.getId()));
 
-       }
-
+    }
     private Product createProduct() {
         SaveProductRequest request = new SaveProductRequest();
         request.setName("Banana" + System.currentTimeMillis());
