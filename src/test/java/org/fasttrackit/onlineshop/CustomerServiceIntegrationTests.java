@@ -3,6 +3,7 @@ package org.fasttrackit.onlineshop;
 import org.fasttrackit.onlineshop.domain.Customer;
 import org.fasttrackit.onlineshop.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshop.service.CustomerService;
+import org.fasttrackit.onlineshop.steps.CustomerSteps;
 import org.fasttrackit.onlineshop.transfer.SaveCustomerRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,17 +15,18 @@ import org.springframework.transaction.TransactionSystemException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CustomerServiceIntegrationTests {
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomerSteps customerSteps;
 
     @Test
     public void testCreateCustomer_whenValidRequest_thenCustomerIsSaved() {
-        createCustomer();
+        customerSteps.createCustomer();
     }
 
 
@@ -39,7 +41,7 @@ public class CustomerServiceIntegrationTests {
 
     @Test
     public void testGetCustomer_whenExistingCustomer_thenReturnCustomer() {
-        Customer createdCustomer = createCustomer();
+        Customer createdCustomer = customerSteps.createCustomer();
 
         Customer customer = customerService.getCustomer(createdCustomer.getId());
 
@@ -57,7 +59,7 @@ public class CustomerServiceIntegrationTests {
 
     @Test
     public void testUpdateCustomer_whenValidRequest_thenReturnUpdateCustomer(){
-    	Customer createdCustomer = createCustomer();
+    	Customer createdCustomer = customerSteps.createCustomer();
 
     	SaveCustomerRequest request =new SaveCustomerRequest();
     	request.setFirstName(createdCustomer.getFirstName() +"update");
@@ -74,24 +76,9 @@ public class CustomerServiceIntegrationTests {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testDeleteCustomer_whenExistingCustomer_thenCustomerIsDeleted(){
-        Customer customer = createCustomer();
+        Customer customer = customerSteps.createCustomer();
         customerService.deleteCustomer(customer.getId());
         customerService.getCustomer(customer.getId());
     }
-    private Customer createCustomer() {
-        SaveCustomerRequest request = new SaveCustomerRequest();
-        request.setFirstName("Ionel" + System.currentTimeMillis());
-        request.setLastName("Pop" + System.currentTimeMillis());
 
-        Customer createdCustomer = customerService.createCustomer(request);
-
-        assertThat(createdCustomer, notNullValue());
-        assertThat(createdCustomer.getId(), notNullValue());
-        assertThat(createdCustomer.getId(), greaterThan(0L));
-
-        assertThat(createdCustomer.getFirstName(), is(request.getFirstName()));
-        assertThat(createdCustomer.getLastName(), is(request.getLastName()));
-
-        return createdCustomer;
-    }
 }
