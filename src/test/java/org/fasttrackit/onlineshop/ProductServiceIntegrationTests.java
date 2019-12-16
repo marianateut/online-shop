@@ -70,7 +70,6 @@ public class ProductServiceIntegrationTests {
 
 		Product updatedProduct = productService.updateProduct(createdProduct.getId(), request);
 		assertThat(updatedProduct, notNullValue());
-		assertThat(updatedProduct.getId(), is(request.getName()));
 		assertThat(updatedProduct.getName(), is(request.getName()));
 		assertThat(updatedProduct.getDescription(), is(request.getDescription()));
 		assertThat(updatedProduct.getPrice(), is(request.getPrice()));
