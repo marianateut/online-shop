@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
-@RequestMapping("*/carts")
+@RequestMapping("/carts")
 public class CartController {
 
     private final CartService cartService;
